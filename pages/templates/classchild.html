@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <title>二级分类列表</title>
+    <link rel="stylesheet" href="layui/css/layui.css" />
+    <link rel="stylesheet" href="css/page.css">
+</head>
+
+<body class="layui-layout-body">
+    <div class="layui-layout layui-layout-admin">
+        <!-- 引入头部 -->
+        <?php
+        require('pages/include/header.html');
+        ?>
+
+        <!-- 引入菜单 -->
+        <?php
+        require('pages/include/menu.html');
+        ?>
+
+        <div class="layui-body">
+            <!-- 内容主体区域 -->
+            <div style="padding: 15px;">
+                <div class='addnew'>
+                    <a href="main.php?go=classchild" class="layui-btn layui-btn-warm">二级分类列表</a>
+                    <a href="main.php?go=classchild_add" class="layui-btn">创建二级分类</a>
+                </div>
+                <div style='clear:both'></div>
+
+
+                <div class="list">
+
+                    <table class="layui-table">
+                        <colgroup>
+                            <col width="100">
+                            <col width="200">
+                            <col width="200">
+                            <col width="200">
+
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>二级分类ID</th>
+                                <th>一级分类名称</th>
+                                <th>二级分类名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php echo $datas; ?>
+
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="layui-footer">
+            <!-- 底部固定区域 -->
+            © yuzhoutushu.com
+        </div>
+    </div>
+    <script src="layui/layui.js"></script>
+    <script>
+        //JavaScript代码区域
+        layui.use("element", function() {
+            var element = layui.element;
+        });
+
+
+
+        function ask(i) {
+            layui.use('layer', function() {
+                var layer = layui.layer;
+
+                //询问框
+
+                layer.confirm('您确定要删除吗？', {
+                    btn: ['确定', '取消'] //按钮
+                }, function() {
+                   window.location.href='main.php?go=classchild_del&id='+i
+                }, function() {
+                   
+                });
+            });
+        }
+    </script>
+</body>
+
+</html> 

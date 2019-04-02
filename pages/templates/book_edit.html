@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, maximum-scale=1"
+        />
+        <title>新书上架</title>
+        <link rel="stylesheet" href="layui/css/layui.css" />
+        <link rel="stylesheet" href="css/page.css" />
+        <script src="./js/jquery-3.3.1.min.js"></script>
+        <script src="./js/wangEditor-3.1.1/release/wangEditor.min.js"></script>
+    </head>
+
+    <body class="layui-layout-body">
+        <div class="layui-layout layui-layout-admin">
+            <!-- 引入头部 -->
+            <?php
+        require('pages/include/header.html');
+        ?>
+
+            <!-- 引入菜单 -->
+            <?php
+        require('pages/include/menu.html');
+        ?>
+
+            <div class="layui-body">
+                <!-- 内容主体区域 -->
+                <div style="padding: 15px;">
+                    <div class="addnew">
+                        <a
+                            href="main.php?go=booklist"
+                            class="layui-btn layui-btn-warm"
+                            >图书列表</a
+                        >
+                        <a href="main.php?go=bookadd" class="layui-btn"
+                            >新书上架</a
+                        >
+                    </div>
+                    <div style="clear:both"></div>
+                    <div></div>
+
+                    <div class="createbody">
+                        <form
+                            class="layui-form"
+                            method="POST"
+                            enctype="multipart/form-data"
+                            action="main.php"
+                        >
+                            <input
+                                type="hidden"
+                                name="go"
+                                value="book_edit_do"
+                            />
+                            <input
+                                type="hidden"
+                                name="id"
+                                value="<?php echo $id ?>"
+                            />
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">选择分类</label>
+                                <div
+                                    class="layui-input-block"
+                                    style="width:30%;float:left;margin-left:0;"
+                                >
+                                    <select
+                                        name="cclass"
+                                        lay-verify="required"
+                                        id="pclass"
+                                        lay-filter="pclass"
+                                    >
+                                        <option
+                                            value="<?php echo  $class_cid; ?>"
+                                            ><?php echo  $classname; ?></option
+                                        >
+                                        <?php echo  $data; ?>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">图书名称</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="text"
+                                        name="bookname"
+                                        required
+                                        lay-verify="required"
+                                        placeholder="请输入图书名称"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                        value="<?php echo $bookname; ?>"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">作者</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="text"
+                                        name="author"
+                                        required
+                                        lay-verify="required"
+                                        placeholder="请输入作者"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                        value="<?php echo $author; ?>"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">出版社</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="text"
+                                        name="publicer"
+                                        required
+                                        lay-verify="required"
+                                        placeholder="请输入出版社"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                        value="<?php echo $publicer; ?>"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">9.9包邮</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="radio"
+                                        name="freeposter"
+                                        value="1"
+                                        title="是"
+                                    />
+                                    <input
+                                        type="radio"
+                                        name="freeposter"
+                                        value="0"
+                                        title="否"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">价格</label>
+                                <div class="layui-input-block">
+                                    <input
+                                        type="text"
+                                        name="price"
+                                        required
+                                        lay-verify="required"
+                                        placeholder="请输入价格"
+                                        autocomplete="off"
+                                        class="layui-input"
+                                        value="<?php echo $price; ?>"
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上传封面</label>
+                                <div class="layui-input-block">
+                                    <button
+                                        type="button"
+                                        class="layui-btn "
+                                        id="upload-icon"
+                                    >
+                                        <i class="layui-icon">&#xe67c;</i
+                                        >上传封面
+                                    </button>
+                                    友情提示：如果不修改封面，则不选择！
+                                    <input
+                                        type="file"
+                                        name="poster[]"
+                                        autocomplete="off"
+                                        class="layui-input "
+                                        style="display:none"
+                                        accept="image/*"
+                                        id="poster"
+                                        multiple
+                                    />
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item layui-form-text">
+                                <label class="layui-form-label">图书介绍</label>
+                                <div class="layui-input-block">
+                                    <div id="editor">
+                                        <?php echo $descript; ?>
+                                    </div>
+                                    <!-- <textarea id="text1" style="width:100%; height:200px;" name='descript'></textarea> -->
+                                    <textarea
+                                        id="text1"
+                                        style="display:none;"
+                                        name="descript"
+                                    ></textarea>
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">上架日期</label>
+                                <div class="layui-inline">
+                                    <input
+                                        type="text"
+                                        class="layui-input"
+                                        id="test1"
+                                        name="dt"
+                                        value="<?php echo $dt; ?>"
+                                    />
+                                </div>
+                            </div>
+                            <div class="layui-form-item">
+                                <div class="layui-input-block">
+                                    <button
+                                        class="layui-btn"
+                                        lay-filter="formDemo"
+                                    >
+                                        立即提交
+                                    </button>
+                                    <button
+                                        type="reset"
+                                        class="layui-btn layui-btn-primary"
+                                    >
+                                        重置
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-footer">
+                <!-- 底部固定区域 -->
+                © yuzhoutushu.com
+            </div>
+        </div>
+        <script src="layui/layui.js"></script>
+        <script>
+            //JavaScript代码区域
+            layui.use("element", function() {
+                var element = layui.element;
+            });
+
+            //Demo
+            layui.use("form", function() {
+                var form = layui.form;
+
+                //监听提交
+                form.on("submit(formDemo)", function(data) {
+                    layer.msg(JSON.stringify(data.field));
+
+                    return true;
+                });
+            });
+
+            layui.use("laydate", function() {
+                var laydate = layui.laydate;
+
+                //执行一个laydate实例
+                laydate.render({
+                    elem: "#test1" //指定元素
+                });
+            });
+
+            $("#upload-icon").click(function() {
+                $("#poster").click();
+            });
+            $("input:radio[value='<?php echo $fp ?>']").attr(
+                "checked",
+                "checked"
+            );
+        </script>
+        <script>
+            var E = window.wangEditor;
+            var editor = new E("#editor");
+            var $text1 = $("#text1");
+            editor.customConfig.onchange = function(html) {
+                // 监控变化，同步更新到 textarea
+                $text1.val(html);
+            };
+
+            editor.customConfig.uploadImgShowBase64 = true; // 使用 base64 保存图片
+
+            editor.create();
+            // 初始化 textarea 的值
+            $text1.val(editor.txt.html());
+        </script>
+    </body>
+</html>
